@@ -13,19 +13,19 @@
 
 
   <div class="navbar">
-    <a href="#home">Home</a>
+    <a href="./Untitled-1.html">Home</a>
     <div class="dropdown">
       <button class="dropbtn">Shape 
         <i class="fa fa-caret-down"></i>
       </button>
       <div class="dropdown-content">
-        <a onclick="UpdateShape('box')">Box</a>
-        <a onclick="UpdateShape('cone')">Cone</a>
-        <a onclick="UpdateShape('teapot')">Teapot</a>
-        <a onclick="UpdateShape('cylinder')">Cylinder</a>
-        <a onclick="UpdateShape('sphere')">Sphere</a>
-        <a onclick="UpdateShape('wheel')">Wheel</a>
-        <a onclick="UpdateShape('dodecahedron')">Dodecahedron</a>
+        <a id="box" onclick="UpdateShape('box')">Box ✓</a>
+        <a id ="cone" onclick="UpdateShape('cone')">Cone </a>
+        <a id="teapot" onclick="UpdateShape('teapot')">Teapot </a>
+        <a id="cylinder" onclick="UpdateShape('cylinder')">Cylinder </a>
+        <a id="sphere" onclick="UpdateShape('sphere')">Sphere </a>
+        <a id="wheel" onclick="UpdateShape('wheel')">Wheel </a>
+        <a id="dodecahedron" onclick="UpdateShape('dodecahedron')">Dodecahedron </a>
       </div>
     </div> 
 
@@ -36,9 +36,9 @@
         <i class="fa fa-caret-down"></i>
       </button>
       <div class="dropdown-content">
-        <a onclick="TypeUpdate('face')">Face</a>
-        <a onclick="TypeUpdate('vertex')">Vertex</a>
-        <a onclick="TypeUpdate('edge')">Edge</a>
+        <a id="face" onclick="TypeUpdate('face')">Face ✓</a>
+        <a id="vertex" onclick="TypeUpdate('vertex')">Vertex </a>
+        <a id="edge" onclick="TypeUpdate('edge')">Edge </a>
       </div>
     </div> 
 
@@ -49,9 +49,9 @@
       </button>
       <div class="dropdown-content">
 
-        <a onclick="Translate()">Translate</a>
-        <a onclick="Rotate()">Rotate</a>
-        <a onclick="Scale()">Scale</a>
+        <a id="translate" onclick="Translate()">Translate </a>
+        <a id="rotate" onclick="Rotate()">Rotate </a>
+        <a id="scale" onclick="Scale()">Scale </a>
       </div>
     </div> 
 
@@ -61,12 +61,12 @@
       </button>
       <div class="dropdown-content">
 
-        <a onclick="UpdateLighting('directional')">DirectionalLight</a>
-        <a onclick="UpdateLighting('point')">PointLight</a>
-        <a onclick="UpdateLighting('spot')">Spotlight</a>
-        <a onclick="Ambient()">Ambient</a>
-        <a onclick="Shadow()">Shadow</a>
-        <a onclick="LightingSetting()">Lighting Setting</a>
+        <a onclick="UpdateLighting('directional')">Directional Light </a>
+        <a onclick="UpdateLighting('point')">PointLight </a>
+        <a onclick="UpdateLighting('spot')">Spotlight </a>
+        <a onclick="Ambient()">Ambient </a>
+        <a onclick="Shadow()">Shadow </a>
+        <a onclick="LightingSetting()">Lighting Setting </a>
       </div>
     </div> 
 
@@ -85,6 +85,14 @@
     function myFunction2() {
       console.log("Hello world2!");
     }  
+
+    function Test()
+    {
+      //document.getElementById("demo").innerHTML +=  " ✓";
+      var stringValue = document.getElementById("demo").innerHTML;
+      document.getElementById("demo").innerHTML = stringValue.replace(new RegExp("✓", "g"), "");
+    }
+
     </script>
 
 <div id="webgl"></div>

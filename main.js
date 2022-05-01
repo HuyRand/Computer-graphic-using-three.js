@@ -13,6 +13,9 @@ function init() {
     InAmbient=false;
     IsShadow = false;
     InLightingSetting=false;
+    AffineTransformation=null;
+    IsCheckAffine=false;
+
 
     var enableFog = false;
 
@@ -84,7 +87,7 @@ function init() {
 
     update(renderer, scene, camera, OrbitControls, clock);
 
-
+    
     return scene;
 }
 
@@ -308,6 +311,7 @@ function update(renderer, scene, camera, controls, clock) {
 }
 
 function TypeUpdate(TypeName) {
+    PrevTypeName=Type;
     Type = TypeName
     scene.remove(Shape);
     UpdateShapeHelper(Shape.name); // reset the shape's default settings
@@ -334,6 +338,7 @@ function TypeUpdate(TypeName) {
     }
 
     ReAttachAffine();
+    CurrentSelectedTypeGUI();
 
     if(IsShadow === true)
     {
@@ -342,17 +347,20 @@ function TypeUpdate(TypeName) {
 }
 
 function UpdateShape(ShapeName) {
+    PrevShapeName=Shape.name;
     if (Shape !== undefined) {
         Shape.geometry.dispose()
         scene.remove(Shape)
     }
 
     UpdateShapeHelper(ShapeName)
+    
 
     switch(Type)
     {
         case 'face':
             scene.add(Shape);
+            
             break;
         case 'vertex':
             TypeUpdate('vertex');
@@ -363,7 +371,7 @@ function UpdateShape(ShapeName) {
     }
 
     ReAttachAffine();
-
+    CurrentSelectedShapeGUI();
     if(IsShadow === true)
     {
         TurnOnShadow();
@@ -373,6 +381,7 @@ function UpdateShape(ShapeName) {
 function UpdateShapeHelper(ShapeName)
 {
     var ShapeMaterial = getMaterial('phong', 'rgb(120,120,120)')
+
     switch (ShapeName) {
         case 'box':
             Shape = getBox(ShapeMaterial, 3, 3, 3);
@@ -403,30 +412,36 @@ function UpdateShapeHelper(ShapeName)
             Shape.position.y = 2;
             break;
     }
+    
     Shape.name=ShapeName;
+    
 }
+
 
 function Translate()
 {
+    PrevAffine = AffineTransformation;
+    AffineTransformation='translate';
     if(InTranslation === false)
     {
         InRotation = false;
         InTranslation=true;
         InScale=false;
-        TranslateHelper()
+        TranslateHelper();
     }
     else
     {
         RemoveAffineGUI();
         InTranslation=false;
     }
+    CurrentSelectedAffineTransformation();
 }
 function TranslateHelper()
 {
     RemoveAffineGUI();
     switch(Type){
         case 'face':
-            guiItem1= gui.add(Shape.position,'x',-10,10);
+            guiItem1 = gui.add(Shape.position,'x',-10,10);
             guiItem2 = gui.add(Shape.position,'y',-10,10);
             guiItem3 = gui.add(Shape.position,'z',-10,10);
             break;
@@ -444,19 +459,21 @@ function TranslateHelper()
 }
 function Rotate()
 {
-    
+    PrevAffine = AffineTransformation;
+    AffineTransformation='rotate';
     if(InRotation===false)
     {
         InRotation = true;
         InTranslation=false;
         InScale=false;
-        RotateHelper()
+        RotateHelper();
     }
     else
     {
         RemoveAffineGUI();
         InRotation = false;
     }
+    CurrentSelectedAffineTransformation();
 }
 function RotateHelper()
 {
@@ -482,18 +499,20 @@ function RotateHelper()
 }
 function Scale()
 {
+    PrevAffine = AffineTransformation;
+    AffineTransformation='scale';
     if(InScale === false)
     {
         InRotation = false;
         InTranslation= false;
         InScale= true;
-        ScaleHelper()
-
+        ScaleHelper();
     }
     else{
         RemoveAffineGUI();
         InScale=false;
     }
+    CurrentSelectedAffineTransformation();
 }
 function ScaleHelper()
 {
@@ -679,6 +698,59 @@ function RemoveLightingSettingGUI()
     {}
 }
 
+function CurrentSelectedShapeGUI()
+{
+    if(String(Shape.name) !== PrevShapeName)
+    {
+
+        RemoveCheckMark(PrevShapeName);
+        AddCheckMark(Shape.name);
+    }
+}
+
+function CurrentSelectedTypeGUI()
+{
+    if(Type !== PrevTypeName)
+    {
+        RemoveCheckMark(PrevTypeName);
+        AddCheckMark(Type);
+    }
+}
+
+function CurrentSelectedAffineTransformation()
+{
+    if(AffineTransformation !== PrevAffine)
+    {
+        if(PrevAffine !== null)
+        {
+            RemoveCheckMark(PrevAffine);
+        }
+        AddCheckMark(AffineTransformation);
+        IsCheckAffine=true;
+    }
+    else if(AffineTransformation === PrevAffine )
+    {
+        if(IsCheckAffine === true){
+            RemoveCheckMark(AffineTransformation);
+            IsCheckAffine=false;
+        }
+        else{
+            AddCheckMark(AffineTransformation);
+            IsCheckAffine=true;
+        }
+
+    }
+}
+
+function AddCheckMark(Name)
+{
+    document.getElementById(Name).innerHTML +=  " ✓";
+}
+function RemoveCheckMark(Name)
+{
+    var stringValue = document.getElementById(Name).innerHTML;
+    document.getElementById(Name).innerHTML = stringValue.replace(new RegExp("✓", "g"), "");
+}
 
 
 
@@ -694,4 +766,8 @@ let InTranslation,InRotation,InScale;
 let guiItem1,guiItem2,guiItem13;
 let guiLighting1,guiLighting2,guiLighting3,guiLighting4;
 let IsShadow,InAmbient,InLightingSetting;
+let PrevShapeName,PrevTypeName,AffineTransformation,PrevAffine;
+let IsCheckAffine;
+let AffineFolder;
+
 init();
