@@ -61,39 +61,32 @@
       </button>
       <div class="dropdown-content">
 
-        <a onclick="UpdateLighting('directional')">Directional Light </a>
-        <a onclick="UpdateLighting('point')">PointLight </a>
-        <a onclick="UpdateLighting('spot')">Spotlight </a>
-        <a onclick="Ambient()">Ambient </a>
-        <a onclick="Shadow()">Shadow </a>
-        <a onclick="LightingSetting()">Lighting Setting </a>
+        <a id="directional" onclick="UpdateLighting('directional')">Directional Light </a>
+        <a id="point" onclick="UpdateLighting('point')">PointLight </a>
+        <a id="spot" onclick="UpdateLighting('spot')">Spotlight ✓</a>
+        <a id="ambient" onclick="Ambient()">Ambient </a>
+        <a id="shadow" onclick="Shadow()">Shadow </a>
+        <a id="lightingsetting" onclick="LightingSetting()">Lighting Setting </a>
       </div>
     </div> 
 
+    <div class="dropdown">
+      <button class="dropbtn">Texture
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
 
+        <input type="file" id="Image" accept="image/jpg, image/png" style="display:none" onchange="ApplyTexture()">
+        <a onclick="UploadImage()">Add Texture</a> 
+        <a  onclick="RemoveTexture()">Remove Texture</a>
 
-
-
+      </div>
+    </div> 
 
   </div>
   
   <script>
-    function myFunction() {
-      console.log("Hello world!");
-    }
-
-    function myFunction2() {
-      console.log("Hello world2!");
-    }  
-
-    function Test()
-    {
-      //document.getElementById("demo").innerHTML +=  " ✓";
-      var stringValue = document.getElementById("demo").innerHTML;
-      document.getElementById("demo").innerHTML = stringValue.replace(new RegExp("✓", "g"), "");
-    }
-
-    </script>
+  </script>
 
 <div id="webgl"></div>
 <script src='./perlin.js'></script>

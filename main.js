@@ -1,12 +1,13 @@
 
+
 function init() {
 
     scene = new THREE.Scene();
 
     gui =  new dat.GUI();
 
-    var clock = new THREE.Clock();
 
+    var clock = new THREE.Clock();
     InTranslation= false;
     InRotation= false;
     InScale= false;
@@ -16,6 +17,7 @@ function init() {
     AffineTransformation=null;
     IsCheckAffine=false;
 
+    Texture=null;
 
     var enableFog = false;
 
@@ -35,9 +37,8 @@ function init() {
     Shape.position.y = 1.5
 
     Lighting = getSpotLight(1); //spotlight or point light or directional light or ambient light
+    Lighting.name='spot';
     SetUpLighting()
-    LightingType='spot';
-
 
 
 
@@ -45,9 +46,9 @@ function init() {
     plane.name = 'plane-1';
 
 
-    //var loader = new THREE.TextureLoader();
+    // var loader = new THREE.TextureLoader();
 
-    //planeMaterial.map= loader.load('./blue-grid-background-design-template-1e1c68884da701e5b3f6d35b07007fe8_screen.jpg');
+    // planeMaterial.map= loader.load('./blue-grid-background-design-template-1e1c68884da701e5b3f6d35b07007fe8_screen.jpg');
 
     // var texture = planeMaterial.map;
     // texture.wrapS=THREE.RepeatWrapping;
@@ -310,6 +311,8 @@ function update(renderer, scene, camera, controls, clock) {
     });
 }
 
+
+
 function TypeUpdate(TypeName) {
     PrevTypeName=Type;
     Type = TypeName
@@ -345,22 +348,18 @@ function TypeUpdate(TypeName) {
         TurnOnShadow();
     }
 }
-
 function UpdateShape(ShapeName) {
     PrevShapeName=Shape.name;
     if (Shape !== undefined) {
         Shape.geometry.dispose()
         scene.remove(Shape)
     }
-
     UpdateShapeHelper(ShapeName)
     
-
     switch(Type)
     {
         case 'face':
             scene.add(Shape);
-            
             break;
         case 'vertex':
             TypeUpdate('vertex');
@@ -377,7 +376,6 @@ function UpdateShape(ShapeName) {
         TurnOnShadow();
     }
 }
-
 function UpdateShapeHelper(ShapeName)
 {
     var ShapeMaterial = getMaterial('phong', 'rgb(120,120,120)')
@@ -416,8 +414,6 @@ function UpdateShapeHelper(ShapeName)
     Shape.name=ShapeName;
     
 }
-
-
 function Translate()
 {
     PrevAffine = AffineTransformation;
@@ -439,21 +435,23 @@ function Translate()
 function TranslateHelper()
 {
     RemoveAffineGUI();
+    AffineFolder = gui.addFolder('Translate');
+    AffineFolder.open();
     switch(Type){
         case 'face':
-            guiItem1 = gui.add(Shape.position,'x',-10,10);
-            guiItem2 = gui.add(Shape.position,'y',-10,10);
-            guiItem3 = gui.add(Shape.position,'z',-10,10);
+            AffineFolder.add(Shape.position,'x',-10,10);
+            AffineFolder.add(Shape.position,'y',-10,10);
+            AffineFolder.add(Shape.position,'z',-10,10);
             break;
         case 'vertex':
-            guiItem1 = gui.add(VertexHelper.position,'x',-10,10);
-            guiItem2 = gui.add(VertexHelper.position,'y',-10,10);
-            guiItem3 = gui.add(VertexHelper.position,'z',-10,10);
+            AffineFolder.add(VertexHelper.position,'x',-10,10);
+            AffineFolder.add(VertexHelper.position,'y',-10,10);
+            AffineFolder.add(VertexHelper.position,'z',-10,10);
             break;
         case 'edge':
-            guiItem1 = gui.add(EdgeHelper.position,'x',-10,10);
-            guiItem2 = gui.add(EdgeHelper.position,'y',-10,10);
-            guiItem3 = gui.add(EdgeHelper.position,'z',-10,10);
+            AffineFolder.add(EdgeHelper.position,'x',-10,10);
+            AffineFolder.add(EdgeHelper.position,'y',-10,10);
+            AffineFolder.add(EdgeHelper.position,'z',-10,10);
             break;
     }
 }
@@ -478,21 +476,23 @@ function Rotate()
 function RotateHelper()
 {
     RemoveAffineGUI();
+    AffineFolder = gui.addFolder('Rotate');
+    AffineFolder.open();
     switch(Type){
         case 'face':
-            guiItem1 = gui.add(Shape.rotation,'x',-10,10);
-            guiItem2 = gui.add(Shape.rotation,'y',-10,10);
-            guiItem3 = gui.add(Shape.rotation,'z',-10,10);
+            AffineFolder.add(Shape.rotation,'x',-10,10);
+            AffineFolder.add(Shape.rotation,'y',-10,10);
+            AffineFolder.add(Shape.rotation,'z',-10,10);
             break;
         case 'vertex':
-            guiItem1 = gui.add(VertexHelper.rotation,'x',-10,10);
-            guiItem2 = gui.add(VertexHelper.rotation,'y',-10,10);
-            guiItem3 = gui.add(VertexHelper.rotation,'z',-10,10);
+            AffineFolder.add(VertexHelper.rotation,'x',-10,10);
+            AffineFolder.add(VertexHelper.rotation,'y',-10,10);
+            AffineFolder.add(VertexHelper.rotation,'z',-10,10);
             break;
         case 'edge':
-            guiItem1 = gui.add(EdgeHelper.rotation,'x',-10,10);
-            guiItem2 = gui.add(EdgeHelper.rotation,'y',-10,10);
-            guiItem3 = gui.add(EdgeHelper.rotation,'z',-10,10);
+            AffineFolder.add(EdgeHelper.rotation,'x',-10,10);
+            AffineFolder.add(EdgeHelper.rotation,'y',-10,10);
+            AffineFolder.add(EdgeHelper.rotation,'z',-10,10);
             break;
     }
 
@@ -517,21 +517,23 @@ function Scale()
 function ScaleHelper()
 {
     RemoveAffineGUI();
+    AffineFolder = gui.addFolder('Scale');
+    AffineFolder.open();
     switch(Type){
         case 'face':
-            guiItem1 = gui.add(Shape.scale,'x',-10,10);
-            guiItem2 = gui.add(Shape.scale,'y',-10,10);
-            guiItem3 = gui.add(Shape.scale,'z',-10,10);
+            AffineFolder.add(Shape.scale,'x',-10,10);
+            AffineFolder.add(Shape.scale,'y',-10,10);
+            AffineFolder.add(Shape.scale,'z',-10,10);
             break;
         case 'vertex':
-            guiItem1 = gui.add(VertexHelper.scale,'x',-10,10);
-            guiItem2 = gui.add(VertexHelper.scale,'y',-10,10);
-            guiItem3 = gui.add(VertexHelper.scale,'z',-10,10);
+            AffineFolder.add(VertexHelper.scale,'x',-10,10);
+            AffineFolder.add(VertexHelper.scale,'y',-10,10);
+            AffineFolder.add(VertexHelper.scale,'z',-10,10);
             break;
         case 'edge':
-            guiItem1 = gui.add(EdgeHelper.scale,'x',-10,10);
-            guiItem2 = gui.add(EdgeHelper.scale,'y',-10,10);
-            guiItem3 = gui.add(EdgeHelper.scale,'z',-10,10);
+            AffineFolder.add(EdgeHelper.scale,'x',-10,10);
+            AffineFolder.add(EdgeHelper.scale,'y',-10,10);
+            AffineFolder.add(EdgeHelper.scale,'z',-10,10);
             break;
     }
 }
@@ -545,19 +547,15 @@ function ReAttachAffine()
         ScaleHelper();
         
 }
-
 function RemoveAffineGUI()
 {
     try{
-        gui.remove(guiItem1);
-        gui.remove(guiItem2);
-        gui.remove(guiItem3);
+        gui.removeFolder(AffineFolder);
         }
     catch(err)
     {
     }
 }
-
 function Shadow()
 {
     if(IsShadow === false)
@@ -582,8 +580,9 @@ function Shadow()
                 break;
         }
     }
-}
 
+    TriggerCheckMark('shadow');
+}
 function TurnOnShadow()
 {
     var plane = scene.getObjectByName('plane-1');
@@ -600,9 +599,9 @@ function TurnOnShadow()
             break;
     }
 }
-
 function UpdateLighting(LightingName)
 {
+    PrevLighting=Lighting.name;
     scene.remove(Lighting);
     scene.remove(LightingHelper);
     LightingHelper.remove(LightSource);
@@ -618,15 +617,16 @@ function UpdateLighting(LightingName)
             Lighting=getPointLight(1);
             break;
     }
-
+    Lighting.name=LightingName;
     SetUpLighting()
+    CurrentSelectedLighting();
     if(InLightingSetting == true)
     {
         LightingSettingHelper();
     }
+    
     scene.add(Lighting)
 }
-
 function SetUpLighting()
 {
     Lighting.position.x = 13;
@@ -640,7 +640,6 @@ function SetUpLighting()
     LightSource = getSphere(SphereMaterial, 0.5);
     Lighting.add(LightSource);
 }
-
 function Ambient()
 {
     if(InAmbient === false)
@@ -658,8 +657,8 @@ function Ambient()
         catch(err)
         {}
     }
+    TriggerCheckMark('ambient');
 }
-
 function LightingSetting()
 {
     if(InLightingSetting === false)
@@ -674,31 +673,71 @@ function LightingSetting()
         RemoveLightingSettingGUI();
         InLightingSetting= false;
     }
+    TriggerCheckMark('lightingsetting');
 }
-
 function LightingSettingHelper()
 {
     RemoveLightingSettingGUI();
-    guiLighting1 = gui.add(Lighting,'intensity',0,10);
-    guiLighting2 = gui.add(Lighting.position, 'x', 0,20);
-    guiLighting3 = gui.add(Lighting.position, 'y', 0,20);
-    guiLighting4 = gui.add(Lighting.position, 'z', 0,20);
+    LightingFolder = gui.addFolder('Lighting Setting');
+    LightingFolder.open();
+    LightingFolder.add(Lighting,'intensity',0,10);
+    LightingFolder.add(Lighting.position, 'x', 0,20);
+    LightingFolder.add(Lighting.position, 'y', 0,20);
+    LightingFolder.add(Lighting.position, 'z', 0,20);
 }
-
-
 function RemoveLightingSettingGUI()
 {
     try{
-        gui.remove(guiLighting1);
-        gui.remove(guiLighting2);
-        gui.remove(guiLighting3);
-        gui.remove(guiLighting4);
+        gui.removeFolder(LightingFolder);
     }
     catch(err)
     {}
 }
+function UploadImage()
+{
+    document.getElementById("Image").click();
+}
+function ApplyTexture()
+{
+    var FileInput = document.querySelector("#Image").files[0];
+    var reader = new FileReader();
+    reader.readAsDataURL(FileInput);
+    reader.onload = function () {
+        var loader = new THREE.TextureLoader();
+        var texture = loader.load(reader.result);
+        var material = new THREE.MeshPhongMaterial( { map: texture } );
+        switch(Type){
+            case 'face':
+                Shape.material = material;
+                break;
+            case 'vertex':
+                VertexHelper.material = material;
+                break;
+            case 'edge':
+                EdgeHelper.material=material;
+                break;
+        }
+    }
+}
 
-function CurrentSelectedShapeGUI()
+function RemoveTexture()
+{
+    var material = getMaterial('phong', 'rgb(120,120,120)')
+    switch(Type){
+        case 'face':
+            Shape.material = material;
+            break;
+        case 'vertex':
+            VertexHelper.material = material;
+            break;
+        case 'edge':
+            EdgeHelper.material=material;
+            break;
+    }
+}
+
+// Add and remove check mark
+function CurrentSelectedShapeGUI() // One check mark at all time
 {
     if(String(Shape.name) !== PrevShapeName)
     {
@@ -707,8 +746,7 @@ function CurrentSelectedShapeGUI()
         AddCheckMark(Shape.name);
     }
 }
-
-function CurrentSelectedTypeGUI()
+function CurrentSelectedTypeGUI() // One check mark at all time
 {
     if(Type !== PrevTypeName)
     {
@@ -717,7 +755,7 @@ function CurrentSelectedTypeGUI()
     }
 }
 
-function CurrentSelectedAffineTransformation()
+function CurrentSelectedAffineTransformation() // none or one check mark at all time 
 {
     if(AffineTransformation !== PrevAffine)
     {
@@ -741,7 +779,59 @@ function CurrentSelectedAffineTransformation()
 
     }
 }
-
+function CurrentSelectedLighting() // One check mark at all time 
+{
+    if(Lighting.name !== PrevLighting )
+    {
+        RemoveCheckMark(PrevLighting);
+        AddCheckMark(Lighting.name);
+    }
+}
+function TriggerCheckMark(type)// turn the check mark on and off
+{
+    switch(type)
+    {
+        case 'shadow':
+            if(IsShadow === true && CheckIfSelected('shadow') === false)
+            {
+                AddCheckMark('shadow');
+            }
+            else if(IsShadow === false && CheckIfSelected('shadow') === true)
+            {
+                RemoveCheckMark('shadow');
+            }
+            break;
+        case 'lightingsetting':
+            if(InLightingSetting === true && CheckIfSelected('lightingsetting') === false)
+            {
+                AddCheckMark('lightingsetting');
+            }
+            else if(InLightingSetting === false && CheckIfSelected('lightingsetting') === true)
+            {
+                RemoveCheckMark('lightingsetting');
+            }
+            break;
+        case 'ambient':
+            if(InAmbient === true && CheckIfSelected('ambient') === false)
+            {
+                AddCheckMark('ambient');
+            }
+            else if(InAmbient === false && CheckIfSelected('ambient') === true)
+            {
+                RemoveCheckMark('ambient');
+            }
+            break;
+    }
+}
+function CheckIfSelected(Name) // check if the checkmark is in the string
+{
+    var stringValue =  document.getElementById(Name).innerHTML;
+    if(stringValue.indexOf('✓') > -1)
+    {
+        return true;
+    }
+    return false;
+}
 function AddCheckMark(Name)
 {
     document.getElementById(Name).innerHTML +=  " ✓";
@@ -755,19 +845,18 @@ function RemoveCheckMark(Name)
 
 
 let scene;
-let Type,LightingType;
+let Type;
 let Lighting,LightingHelper,LightSource,AmbientLight;
 let gui;
 let OrbitControls;
 let Shape, VertexHelper, EdgeHelper;
 let camera,renderer;
-let Control;
 let InTranslation,InRotation,InScale;
-let guiItem1,guiItem2,guiItem13;
-let guiLighting1,guiLighting2,guiLighting3,guiLighting4;
 let IsShadow,InAmbient,InLightingSetting;
-let PrevShapeName,PrevTypeName,AffineTransformation,PrevAffine;
+let Texture;
+let PrevShapeName,PrevTypeName,AffineTransformation,PrevAffine,PrevLighting;
 let IsCheckAffine;
-let AffineFolder;
+let AffineFolder,LightingFolder;
+
 
 init();
