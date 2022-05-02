@@ -78,13 +78,26 @@
 
         <input type="file" id="Image" accept="image/jpg, image/png" style="display:none" onchange="ApplyTexture()">
         <a onclick="UploadImage()">Add Texture</a> 
-        <a  onclick="RemoveTexture()">Remove Texture</a>
+        <a onclick="RemoveTexture()">Remove Texture</a>
+
+      </div>
+    </div> 
+
+    <div class="dropdown">
+      <button class="dropbtn">Animation
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a id='rotating' onclick="Animating('rotating')">Rotating </a>
+        <a id='morphing' onclick="Animating('morphing')">Morphing </a>
+
 
       </div>
     </div> 
 
   </div>
-  
+
+
   <script>
   </script>
 
