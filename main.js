@@ -269,6 +269,7 @@ function update(renderer, scene, camera, controls, clock) {
         {
 
             ToApply=new THREE.Matrix4().makeRotationY(Math.PI / 360);
+
         }
         else if(IsMorphing === true)
         {  
@@ -302,12 +303,27 @@ function update(renderer, scene, camera, controls, clock) {
         
         switch(Type){
             case 'face':
+                if(IsRotating)
+                {
+                    Shape.position.x=0;
+                    Shape.position.z=0;
+                }
                 Shape.applyMatrix4(ToApply);
                 break;
             case 'edge':
+                if(IsRotating)
+                {
+                    EdgeHelper.position.x=0;
+                    EdgeHelper.position.z=0;
+                }
                 EdgeHelper.applyMatrix4(ToApply);
                 break;
             case 'vertex':
+                if(IsRotating)
+                {
+                    VertexHelper.position.x=0;
+                    VertexHelper.position.z=0;
+                }
                 VertexHelper.applyMatrix4(ToApply);
                 break;
         }
