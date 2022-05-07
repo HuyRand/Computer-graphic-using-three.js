@@ -23,7 +23,7 @@ function init() {
     IsCheckAffine=false; //check if an Affine transformation option is selected 
     InTexture=false; // check if Texture option is selected 
     Texture=null; // texture entity to make a new material
-    CurrentAnimation=null;
+    CurrentAnimation=null;  
 
     IsRotating=false;
     IsMorphing=false;
