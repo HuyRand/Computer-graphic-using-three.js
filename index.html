@@ -1,112 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CS105</title>
-  <link rel="stylesheet" href="./Style.css">
-</head>
-<body>
-  <div class="navbar">
-    <a href="./Untitled-1.html">Home</a>
-    <div class="dropdown">
-      <button class="dropbtn">Shape 
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-content">
-        <a id="box" onclick="UpdateShape('box')">Box ✓</a>
-        <a id ="cone" onclick="UpdateShape('cone')">Cone </a>
-        <a id="teapot" onclick="UpdateShape('teapot')">Teapot </a>
-        <a id="cylinder" onclick="UpdateShape('cylinder')">Cylinder </a>
-        <a id="sphere" onclick="UpdateShape('sphere')">Sphere </a>
-        <a id="wheel" onclick="UpdateShape('wheel')">Wheel </a>
-        <a id="dodecahedron" onclick="UpdateShape('dodecahedron')">Dodecahedron </a>
-      </div>
-    </div> 
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS105</title>
+    <link rel="stylesheet" href="./Style.css">
+  </head>
+  <body>
+    <div class="navbar">
+      <a href="./Untitled-1.html">Home</a>
+      <div class="dropdown">
+        <button class="dropbtn">Shape 
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+          <a id="box" onclick="UpdateShape('box')">Box ✓</a>
+          <a id ="cone" onclick="UpdateShape('cone')">Cone </a>
+          <a id="teapot" onclick="UpdateShape('teapot')">Teapot </a>
+          <a id="cylinder" onclick="UpdateShape('cylinder')">Cylinder </a>
+          <a id="sphere" onclick="UpdateShape('sphere')">Sphere </a>
+          <a id="wheel" onclick="UpdateShape('wheel')">Wheel </a>
+          <a id="dodecahedron" onclick="UpdateShape('dodecahedron')">Dodecahedron </a>
+        </div>
+      </div> 
 
 
 
-    <div class="dropdown">
-      <button class="dropbtn">Type 
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-content">
-        <a id="face" onclick="TypeUpdate('face')">Face ✓</a>
-        <a id="vertex" onclick="TypeUpdate('vertex')">Vertex </a>
-        <a id="edge" onclick="TypeUpdate('edge')">Edge </a>
-      </div>
-    </div> 
+      <div class="dropdown">
+        <button class="dropbtn">Type 
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+          <a id="face" onclick="TypeUpdate('face')">Face ✓</a>
+          <a id="vertex" onclick="TypeUpdate('vertex')">Vertex </a>
+          <a id="edge" onclick="TypeUpdate('edge')">Edge </a>
+        </div>
+      </div> 
 
 
-    <div class="dropdown">
-      <button class="dropbtn">Affine Transformation 
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-content">
+      <div class="dropdown">
+        <button class="dropbtn">Affine Transformation 
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
 
-        <a id="translate" onclick="Translate()">Translate </a>
-        <a id="rotate" onclick="Rotate()">Rotate </a>
-        <a id="scale" onclick="Scale()">Scale </a>
-      </div>
-    </div> 
+          <a id="translate" onclick="Translate()">Translate </a>
+          <a id="rotate" onclick="Rotate()">Rotate </a>
+          <a id="scale" onclick="Scale()">Scale </a>
+        </div>
+      </div> 
 
-    <div class="dropdown">
-      <button class="dropbtn">Lighting
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-content">
+      <div class="dropdown">
+        <button class="dropbtn">Lighting
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
 
-        <a id="directional" onclick="UpdateLighting('directional')">Directional Light </a>
-        <a id="point" onclick="UpdateLighting('point')">PointLight </a>
-        <a id="spot" onclick="UpdateLighting('spot')">Spotlight ✓</a>
-        <a id="ambient" onclick="Ambient()">Ambient </a>
-        <a id="shadow" onclick="Shadow()">Shadow </a>
-        <a id="lightingsetting" onclick="LightingSetting()">Lighting Setting </a>
-      </div>
-    </div> 
+          <a id="directional" onclick="UpdateLighting('directional')">Directional Light </a>
+          <a id="point" onclick="UpdateLighting('point')">PointLight </a>
+          <a id="spot" onclick="UpdateLighting('spot')">Spotlight ✓</a>
+          <a id="ambient" onclick="Ambient()">Ambient </a>
+          <a id="shadow" onclick="Shadow()">Shadow </a>
+          <a id="lightingsetting" onclick="LightingSetting()">Lighting Setting </a>
+        </div>
+      </div> 
 
-    <div class="dropdown">
-      <button class="dropbtn">Texture
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-content">
+      <div class="dropdown">
+        <button class="dropbtn">Texture
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
 
-        <input type="file" id="Image" accept="image/jpg, image/png" style="display:none" onchange="ApplyTexture()">
-        <a onclick="UploadImage()">Add Texture</a> 
-        <a onclick="RemoveTexture()">Remove Texture</a>
+          <input type="file" id="Image" accept="image/jpg, image/png" style="display:none" onchange="ApplyTexture()">
+          <a onclick="UploadImage()">Add Texture</a> 
+          <a onclick="RemoveTexture()">Remove Texture</a>
 
-      </div>
-    </div> 
+        </div>
+      </div> 
 
-    <div class="dropdown">
-      <button class="dropbtn">Animation
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-content">
-        <a id='rotating' onclick="Animating('rotating')">Rotating </a>
-        <a id='morphing' onclick="Animating('morphing')">Morphing </a>
-
-
-      </div>
-    </div> 
-
-  </div>
+      <div class="dropdown">
+        <button class="dropbtn">Animation
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+          <a id='rotating' onclick="Animating('rotating')">Rotating </a>
+          <a id='morphing' onclick="Animating('morphing')">Morphing </a>
 
 
-  <script>
-  </script>
+        </div>
+      </div> 
 
-<div id="webgl"></div>
-<script src='./perlin.js'></script>
-<script type="text/javascript" src=".\node_modules\dat.gui\build\dat.gui.min.js"></script>
-<script src="./node_modules/three/build/three.js"></script>
-<script src="./node_modules\three\examples\js\controls\OrbitControls.js"></script>
-<script src="./TeapotGeometry.js"></script>
-<script src="./TransformControls.js"></script>
-<script type = "text/javascript" src="./main.js"></script>
-<script src="./VertexNormalsHelper.js"></script>
+    </div>
 
 
-</body>
+    <script>
+    </script>
+
+    <div id="webgl"></div>
+    <script src='./perlin.js'></script>
+    <script type="text/javascript" src=".\node_modules\dat.gui\build\dat.gui.min.js"></script>
+    <script src="./node_modules/three/build/three.js"></script>
+    <script src="./node_modules\three\examples\js\controls\OrbitControls.js"></script>
+    <script src="./TeapotGeometry.js"></script>
+    <script src="./TransformControls.js"></script>
+    <script type = "text/javascript" src="./main.js"></script>
+    <script src="./VertexNormalsHelper.js"></script>
+  </body>
+
+
 </html>
