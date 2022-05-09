@@ -31,7 +31,8 @@ function init() {
     IsEnlarging=true;
 
 
-
+    //axis
+    AxisHelper = new THREE.AxesHelper(20)
 
     //populating plane
     var planeMaterial = getMaterial('phong', 'rgb(255,255,255)');
@@ -40,6 +41,7 @@ function init() {
     //populating a default object - box , face type
     var ShapeMaterial = getMaterial('phong', 'rgb(120,120,120)')
     Shape = getBox(ShapeMaterial, 3, 3, 3);
+    Shape.add(AxisHelper)
     Shape.name = 'box'
     Shape.position.y = 1.5
     Type = 'face';
@@ -342,10 +344,8 @@ function TypeUpdate(TypeName) {
     scene.remove(Shape);
 
     UpdateShapeHelper(Shape.name); // reseting the shape's default settings to have a new base for vertex and edge function to work on 
-
     scene.remove(VertexHelper);
     scene.remove(EdgeHelper);
-
 
     //Shape works as a base providing the geometry and hence VertexHelper, EdgeHelper use it to make a new mesh 
     switch (TypeName) {
@@ -353,18 +353,21 @@ function TypeUpdate(TypeName) {
             var PointMaterial = new THREE.PointsMaterial( { color: 0x00FF00 } );
             VertexHelper=new THREE.Points( Shape.geometry, PointMaterial );
             VertexHelper.position.y=3;
+            VertexHelper.add(AxisHelper)
             scene.add(VertexHelper);
             break;
         case 'edge':
             edges = new THREE.EdgesGeometry(Shape.geometry);
             EdgeHelper = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x00FF00  }));
             EdgeHelper.position.y=3;
+            EdgeHelper.add(AxisHelper);
             scene.add(EdgeHelper);
             break;
         case 'face':
             scene.add(Shape);
             break;
     }
+
 
     ReAttachAffine(); // after such process , the newly updates object setting is reset , thus needs to reset the affine transformation
     CurrentSelectedTypeGUI(); // update check mark
@@ -452,6 +455,7 @@ function UpdateShapeHelper(ShapeName) //return a mesh with default setting
     }
     
     Shape.name=ShapeName;
+    Shape.add(AxisHelper);
     
 }
 function Translate() //Add and remove translate gui option 
@@ -945,6 +949,7 @@ let AmbientLight;
 let gui;
 let OrbitControls; // camera helper
 let Shape, VertexHelper, EdgeHelper; //Only one entity is displayed at a time
+let AxisHelper; //axis helper
 let camera,renderer;
 
 let InTranslation,InRotation,InScale;     // Check if the player has chosen a Affine transformation (there can be either 0 or 1 check mark at a time; dependent on each other)
