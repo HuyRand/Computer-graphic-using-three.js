@@ -280,7 +280,17 @@ function update(renderer, scene, camera, controls, clock) {
         if(IsRotating === true)
         {
 
-            ToApply=new THREE.Matrix4().makeRotationY(Math.PI / 360);
+            switch(Type){
+                case 'face':
+                    Shape.rotation.y+=0.01;
+                    break;
+                case 'edge':
+                    EdgeHelper.rotation.y+=0.01;
+                    break;
+                case 'vertex':
+                    VertexHelper.rotation.y+=0.01;
+                    break;
+            }
 
         }
         else if(IsMorphing === true)
@@ -310,37 +320,20 @@ function update(renderer, scene, camera, controls, clock) {
                 Tx = 0.999, Ty = 0.999, Tz = 0.999; 
             }
             ToApply=new THREE.Matrix4().makeScale(Tx,Ty,Tz);
+            switch(Type){
+                case 'face':
+                    Shape.applyMatrix4(ToApply);
+                    break;
+                case 'edge':
+                    EdgeHelper.applyMatrix4(ToApply);
+                    break;
+                case 'vertex':
+                    VertexHelper.applyMatrix4(ToApply);
+                    break;
+            }
 
-        }
-        
-        switch(Type){
-            case 'face':
-                if(IsRotating)
-                {
-                    Shape.position.x=0;
-                    Shape.position.z=0;
-                }
-                Shape.applyMatrix4(ToApply);
-                break;
-            case 'edge':
-                if(IsRotating)
-                {
-                    EdgeHelper.position.x=0;
-                    EdgeHelper.position.z=0;
-                }
-                EdgeHelper.applyMatrix4(ToApply);
-                break;
-            case 'vertex':
-                if(IsRotating)
-                {
-                    VertexHelper.position.x=0;
-                    VertexHelper.position.z=0;
-                }
-                VertexHelper.applyMatrix4(ToApply);
-                break;
         }
     }
-
     controls.update();
     requestAnimationFrame(function () {
         update(renderer, scene, camera,controls,  clock);
