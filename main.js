@@ -8,7 +8,7 @@ function init() {
 
 
     var clock = new THREE.Clock();
-
+    GLTFLoader = new THREE.GLTFLoader(); 
     
     AffineTransformation=null; //Currently chosen Affine Transformation 
     // Check if the player has chosen a Affine transformation
@@ -60,7 +60,17 @@ function init() {
     //Adding entities into the scene
     scene.add(plane);
     scene.add(Lighting);
+    
     scene.add(Shape)
+
+    // GLTFLoader.load('Monke.glb', function(gltf){
+    //     scene.add( gltf.scene );
+    //     Shape = gltf.scene.children[2];
+    //     console.log(Shape)
+
+    // });
+
+    // console.log(Shape)
 
     // Declaring camera agent
     camera = new THREE.OrthographicCamera(
@@ -337,13 +347,13 @@ function update(renderer, scene, camera, controls, clock) {
     });
 }
 
-function TypeUpdate(TypeName) {
+async function TypeUpdate(TypeName) {
     //Remove all the previous kinds of displaying the object
     PrevTypeName=Type;
     Type = TypeName
-    scene.remove(Shape);
 
-    UpdateShapeHelper(Shape.name); // reseting the shape's default settings to have a new base for vertex and edge function to work on 
+    scene.remove(Shape);
+    await UpdateShapeHelper(Shape.name); // reseting the shape's default settings to have a new base for vertex and edge function to work on 
     scene.remove(VertexHelper);
     scene.remove(EdgeHelper);
 
@@ -368,7 +378,6 @@ function TypeUpdate(TypeName) {
             break;
     }
 
-
     ReAttachAffine(); // after such process , the newly updates object setting is reset , thus needs to reset the affine transformation
     CurrentSelectedTypeGUI(); // update check mark
 
@@ -381,9 +390,8 @@ function TypeUpdate(TypeName) {
         ApplyTexture();
     }
 }
-function UpdateShape(ShapeName) {
+async function UpdateShape(ShapeName) {
     PrevShapeName=Shape.name; // updating flag for adding and removing check mark
-
     //Removing the base completely 
     if (Shape !== undefined) {
         Shape.geometry.dispose()
@@ -391,7 +399,7 @@ function UpdateShape(ShapeName) {
     }
 
     //Calling a new shape
-    UpdateShapeHelper(ShapeName)
+    await UpdateShapeHelper(ShapeName)
     
     //Add object modified accordingly to the selected type to the scene
     switch(Type)
@@ -419,7 +427,7 @@ function UpdateShape(ShapeName) {
         ApplyTexture();
     }
 }
-function UpdateShapeHelper(ShapeName) //return a mesh with default setting 
+async function UpdateShapeHelper(ShapeName) //return a mesh with default setting 
 {
     var ShapeMaterial = getMaterial('phong', 'rgb(120,120,120)')
 
@@ -452,8 +460,20 @@ function UpdateShapeHelper(ShapeName) //return a mesh with default setting
             Shape = getDodecahedron(ShapeMaterial, 2);
             Shape.position.y = 2;
             break;
+        case 'custom':
+            if (document.getElementById('selectedModel').files.length != 0)
+                {
+                    await LoadCustomModel()
+                    Shape.position.y=4;
+                }
+            break;
     }
-    
+
+    // remove custom model file
+    if (ShapeName!='custom')
+    {
+        document.getElementById('selectedModel').value=null;
+    }
     Shape.name=ShapeName;
     Shape.add(AxisHelper);
     
@@ -639,7 +659,7 @@ function TurnOnShadow()
             VertexHelper.castShadow=true;
             break;
         case 'edge':
-            EdgeHelper,castShadow=true;
+            EdgeHelper.castShadow=true;
             break;
     }
 }
@@ -770,6 +790,7 @@ function ApplyTexture() // apply texture the object after the image is loaded fr
 function RemoveTexture() // remove current applied texture
 {
     InTexture=false;
+    document.getElementById('Image').value=null;
     var material = getMaterial('phong', 'rgb(120,120,120)')
     switch(Type){
         case 'face':
@@ -938,8 +959,28 @@ function RemoveCheckMark(Name)
     var stringValue = document.getElementById(Name).innerHTML;
     document.getElementById(Name).innerHTML = stringValue.replace(new RegExp("✓", "g"), "");
 }
+function UploadCustomModel(){
+    // console.log('add model');
+    document.getElementById("selectedModel").click()
+   
+}
+function LoadCustomModel(){
+    return new Promise((resolve,reject)=>{
+        const url = URL.createObjectURL(document.getElementById("selectedModel").files[0]);
+        GLTFLoader.load(url, function ( gltf ) {  
+                Shape = gltf.scene.children[2];
+                resolve();
+                URL.revokeObjectURL(url);
+                }, function (){  }, function (){ 
+                    URL.revokeObjectURL(url);
+                }
+                )
+    });
+}
 
 
+    
+   
 
 let scene;
 let Type;
@@ -966,4 +1007,7 @@ let AffineFolder,LightingFolder; // folder to group dat gui elements
 let IsRotating,IsMorphing,IsAnimating; 
 let IsEnlarging; //sub flag for Morphing function , it indicates whether to enlarge the object or shrink it
 let PrevAnimation,CurrentAnimation; //remove the previous selected option check mark if needed and add a check mark to the newly selected one
+
+let GLTFLoader,gltfScene; //Loader for gltff
+let model; //test
 init();

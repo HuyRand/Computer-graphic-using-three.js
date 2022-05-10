@@ -22,6 +22,9 @@
           <a id="sphere" onclick="UpdateShape('sphere')">Sphere </a>
           <a id="wheel" onclick="UpdateShape('wheel')">Wheel </a>
           <a id="dodecahedron" onclick="UpdateShape('dodecahedron')">Dodecahedron </a>
+          
+          <input id="selectedModel" type="file" style="display:none" accept=".glb" onchange="UpdateShape('custom')">
+          <a id="custom" onclick="UploadCustomModel()">Add Custom Model</a>
         </div>
       </div> 
 
@@ -100,6 +103,7 @@
     <script src="./three.js"></script>
     <script src="./OrbitControls.js"></script>
     <script src="./TeapotGeometry.js"></script>
+    <script src="./GLTFLoader.js"></script>
     <script src="./TransformControls.js"></script>
     <script type = "text/javascript" src="./main.js"></script>
     <script src="./VertexNormalsHelper.js"></script>
