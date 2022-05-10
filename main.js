@@ -961,7 +961,12 @@ function LoadCustomModel(){
     return new Promise((resolve,reject)=>{
         const url = URL.createObjectURL(document.getElementById("selectedModel").files[0]);
         GLTFLoader.load(url, function ( gltf ) {  
-                Shape = gltf.scene.children[2];
+                gltf.scene.traverse( function (node) {
+                   if (node instanceof THREE.Mesh)
+                        Shape = node
+                })
+                var ShapeMaterial = getMaterial('phong', 'rgb(120,120,120)')
+                Shape.material = ShapeMaterial;
                 resolve();
                 URL.revokeObjectURL(url);
                 }, function (){  }, function (){ 
